@@ -1,0 +1,14 @@
+name: 'opa'
+description: 'Run opa test command'
+inputs:
+  path:
+    description: 'Path to directory where rego files are located'
+    required: true
+    default: '.'
+  coverage:
+    description: 'Percentage of test coverage to require'
+    required: true
+    default: '80%'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
