@@ -9,9 +9,6 @@ inputs:
     description: 'Percentage of test coverage to require'
     required: true
     default: '80%'
-  files:
-    description: 'List of path to rego files ("path" is used for base path)'
-    default: '80%'
 runs:
   using: 'docker'
   image: 'Dockerfile'
