@@ -4,18 +4,36 @@
 # time=$(date)
 # echo ::set-output name=time::$time
 
-BASE="$INPUT_PATH"
+BASE="${INPUT_PATH}"
 COVERAGE=${INPUT_COVERAGE%%%} # trim % (e.g. 90% -> 90)
+FILES=${INPUT_FILES}
+
+cd "${BASE}"
 
 main() {
   local -a targets
-  targets=( $(find ${BASE} -name '*.rego') )
+  targets=()
+
+  if [[ -n ${FILES} ]]; then
+    local target
+    for target in ${FILES//,/ }
+    do
+      targets+=( ${target} )
+    done
+  else
+    targets=( $(find . -name '*.rego') )
+  fi
 
   local error=false
 
   local rego
   for rego in ${targets[@]}
   do
+    # target is only .rego file
+    if [[ ! ${rego} =~ .rego$ ]]; then
+      continue
+    fi
+
     # target is only .rego file
     if [[ ${rego} =~ _test.rego$ ]]; then
       continue
