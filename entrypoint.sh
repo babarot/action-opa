@@ -1,22 +1,15 @@
 #!/bin/bash
 
-# echo "Hello $1"
-# time=$(date)
-# echo ::set-output name=time::$time
-
 BASE="${INPUT_PATH}"
 COVERAGE=${INPUT_COVERAGE%%%} # trim % (e.g. 90% -> 90)
-IFS_ORIGINAL="${IFS}"
-IFS=,
-files=( ${INPUT_FILES} )
-IFS="${IFS_ORIGINAL}"
+FILES=( ${INPUT_FILES} )
 
 main() {
   local -a targets
   targets=( $(find ${BASE} -name '*.rego') )
 
-  if (( ${#files[@]} > 0 )); then
-    targets=( "${files[@]}" )
+  if (( ${#FILES[@]} > 0 )); then
+    targets=( "${FILES[@]}" )
   fi
 
   local error=false

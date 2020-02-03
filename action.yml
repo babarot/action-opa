@@ -10,7 +10,7 @@ inputs:
     required: true
     default: '80%'
   files:
-    description: 'Files subject to OPA testing. List should be separated by comma'
+    description: 'Files subject to OPA testing. List should be separated by a space'
     required: false
     default: ''
 runs:
