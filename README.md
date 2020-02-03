@@ -1,7 +1,11 @@
 action-opa
 ==========
 
+![](demo.png)
+
 Run opa test command with GitHub Actions
+
+You can use the fixed version from: [Releases](https://github.com/b4b4r07/action-opa/releases/latest)
 
 ## Usage
 
@@ -41,6 +45,64 @@ jobs:
 
 If you want to test [opa](https://github.com/open-policy-agent/opa)/[conftest](https://github.com/instrumenta/conftest) policies against only changed files, you need to use [b4b4r07/action-changed-objects](https://github.com/b4b4r07/action-changed-objects) to get the changed files in Git commit. It defaults to compare with checkout-ed branch and origin/master branch.
 
+BTW, you want the example rego files:
+
+<details><summary><code>example.rego</code></summary>
+</br>
+
+```rego
+package authz
+
+allow {
+    input.path == ["users"]
+    input.method == "POST"
+}
+
+allow {
+    some profile_id
+    input.path = ["users", profile_id]
+    input.method == "GET"
+    profile_id == input.user_id
+}
+```
+
+</details>
+
+<details><summary><code>example_test.rego</code></summary>
+</br>
+
+```rego
+package authz
+
+test_post_allowed {
+    allow with input as {"path": ["users"], "method": "POST"}
+}
+
+test_get_anonymous_denied {
+    not allow with input as {"path": ["users"], "method": "GET"}
+}
+
+test_get_user_allowed {
+    allow with input as {"path": ["users", "bob"], "method": "GET", "user_id": "bob"}
+}
+
+test_get_another_user_denied {
+    not allow with input as {"path": ["users", "bob"], "method": "GET", "user_id": "alice"}
+}
+```
+
+</details>
+
+```console
+$ docker run -v $(pwd):/tests openpolicyagent/opa test -v /tests/example.rego /tests/example_test.rego
+data.authz.test_post_allowed: PASS (2.3088ms)
+data.authz.test_get_anonymous_denied: PASS (765.8µs)
+data.authz.test_get_user_allowed: PASS (880.2µs)
+data.authz.test_get_another_user_denied: PASS (1.1077ms)
+--------------------------------------------------------------------------------
+PASS: 4/4
+```
+
 ## Customizing
 
 ### inputs
@@ -73,4 +135,4 @@ The following are as `step.env` keys
 
 ## License
 
-MIT
+[MIT](https://b4b4r07.mit-license.org/)
