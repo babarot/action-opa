@@ -18,6 +18,11 @@ main() {
   for rego in ${targets[@]}
   do
     # target is only .rego file
+    if [[ ${rego} != *.rego ]]; then
+      continue
+    fi
+
+    # target is only .rego file
     if [[ ${rego} =~ _test.rego$ ]]; then
       continue
     fi
