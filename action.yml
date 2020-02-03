@@ -3,11 +3,11 @@ description: 'Run opa test command'
 inputs:
   path:
     description: 'Path to directory where rego files are located'
-    required: true
+    required: false
     default: '.'
   coverage:
     description: 'Percentage of test coverage to require'
-    required: true
+    required: false
     default: '80%'
   files:
     description: 'Files subject to OPA testing. List should be separated by a space'

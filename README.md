@@ -5,7 +5,7 @@ action-opa
 
 ![](demo.png)
 
-Run opa test command with GitHub Actions
+Run [opa test](https://www.openpolicyagent.org/docs/latest/policy-testing/) command with GitHub Actions
 
 You can use the fixed version from: [Releases](https://github.com/b4b4r07/action-opa/releases/latest)
 
@@ -111,10 +111,10 @@ PASS: 4/4
 
 The following are optional as `step.with` keys
 
-| Name       | Type   | Description                                                  | Default |
-| ---------- | ------ | ------------------------------------------------------------ | ------- |
-| `path`     | String | Path to directory where rego files are located               | `.`     |
-| `coverage` | String | Percentage of test coverage to require                       | `80%`   |
+| Name       | Type   | Description                                                       | Default |
+| ---------- | ------ | ----------------------------------------------------------------- | ------- |
+| `path`     | String | Path to directory where rego files are located                    | `.`     |
+| `coverage` | String | Percentage of test coverage to require                            | `80%`   |
 | `files`    | String | Files subject to OPA testing. List should be separated by a space | (n/a)   |
 
 When providing a `path` and `files` at the same time, `files` will be attempted first, then falling back on `path` if the files can not be got from.
