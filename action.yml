@@ -9,6 +9,10 @@ inputs:
     description: 'Percentage of test coverage to require'
     required: true
     default: '80%'
+  files:
+    description: 'Files subject to OPA testing. List should be separated by comma'
+    required: false
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'

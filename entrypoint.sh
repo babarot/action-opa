@@ -4,12 +4,20 @@
 # time=$(date)
 # echo ::set-output name=time::$time
 
-BASE="$INPUT_PATH"
+BASE="${INPUT_PATH}"
 COVERAGE=${INPUT_COVERAGE%%%} # trim % (e.g. 90% -> 90)
+IFS_ORIGINAL="${IFS}"
+IFS=,
+files=( ${INPUT_FILES} )
+IFS="${IFS_ORIGINAL}"
 
 main() {
   local -a targets
   targets=( $(find ${BASE} -name '*.rego') )
+
+  if (( ${#files[@]} > 0 )); then
+    targets=( "${files[@]}" )
+  fi
 
   local error=false
 
