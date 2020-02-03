@@ -1,8 +1,8 @@
 #!/bin/bash
 
 BASE="${INPUT_PATH}"
-COVERAGE=${INPUT_COVERAGE%%%} # trim % (e.g. 90% -> 90)
-FILES=( ${INPUT_FILES} )
+COVERAGE="${INPUT_COVERAGE%%%}" # trim % (e.g. 90% -> 90)
+FILES=( "${INPUT_FILES}" )
 
 main() {
   local -a targets
