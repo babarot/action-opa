@@ -58,7 +58,8 @@ run_opa() {
 
 main() {
   run_opa "$@" | tee -a result
-  echo "::set-output name=result::$(cat result)"
+  result="$(cat result)"
+  echo "::set-output name=result::${result//$'\n'/'%0A'}"
 }
 
 set -o pipefail
