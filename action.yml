@@ -17,6 +17,9 @@ inputs:
     description: 'Notify the result as GitHub comment if enabled'
     required: false
     default: 'false'
+outputs:
+  result:
+    description: 'Result of opa command'
 runs:
   using: 'docker'
   image: 'Dockerfile'
