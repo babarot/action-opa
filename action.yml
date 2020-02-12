@@ -13,6 +13,9 @@ inputs:
     description: 'Files subject to OPA testing. List should be separated by a space'
     required: false
     default: ''
+outputs:
+  result:
+    description: 'Outputs of opa command'
 runs:
   using: 'docker'
   image: 'Dockerfile'

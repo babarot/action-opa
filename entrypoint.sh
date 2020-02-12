@@ -4,7 +4,7 @@ BASE="${INPUT_PATH}"
 COVERAGE="${INPUT_COVERAGE%%%}" # trim % (e.g. 90% -> 90)
 FILES=( "${INPUT_FILES}" )
 
-main() {
+run_opa() {
   local -a targets
   targets=( $(find ${BASE} -name '*.rego') )
 
@@ -54,6 +54,15 @@ main() {
     return 1
   fi
 }
+
+main() {
+  run_opa "$@" | tee -a result
+  result="$(cat result)"
+  # https://github.community/t5/GitHub-Actions/set-output-Truncates-Multiline-Strings/td-p/37870
+  echo "::set-output name=result::${result//$'\n'/'%0A'}"
+}
+
+set -o pipefail
 
 main "$@"
 exit $?
