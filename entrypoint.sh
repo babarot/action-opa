@@ -3,7 +3,6 @@
 BASE="${INPUT_PATH}"
 COVERAGE="${INPUT_COVERAGE%%%}" # trim % (e.g. 90% -> 90)
 FILES=( "${INPUT_FILES}" )
-USE_NOTIFY="${INPUT_NOTIFY:-false}"
 
 run_opa() {
   local -a targets
@@ -59,6 +58,7 @@ run_opa() {
 main() {
   run_opa "$@" | tee -a result
   result="$(cat result)"
+  # https://github.community/t5/GitHub-Actions/set-output-Truncates-Multiline-Strings/td-p/37870
   echo "::set-output name=result::${result//$'\n'/'%0A'}"
 }
 

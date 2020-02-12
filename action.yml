@@ -13,13 +13,9 @@ inputs:
     description: 'Files subject to OPA testing. List should be separated by a space'
     required: false
     default: ''
-  notify:
-    description: 'Notify the result as GitHub comment if enabled'
-    required: false
-    default: 'false'
 outputs:
   result:
-    description: 'Result of opa command'
+    description: 'Outputs of opa command'
 runs:
   using: 'docker'
   image: 'Dockerfile'
