@@ -3,6 +3,7 @@
 BASE="${INPUT_PATH}"
 COVERAGE="${INPUT_COVERAGE%%%}" # trim % (e.g. 90% -> 90)
 FILES=( "${INPUT_FILES}" )
+USE_NOTIFY="${INPUT_NOTIFY:-false}"
 
 main() {
   local -a targets
@@ -55,5 +56,31 @@ main() {
   fi
 }
 
-main "$@"
+notify() {
+  if ${USE_NOTIFY}; then
+    cat <&0
+    return 0
+  fi
+
+  local comment template
+
+  comment="$(tee >(cat) >&2)" # pipe and output stderr
+  template="## opa test result
+\`\`\`
+%s
+\`\`\`
+"
+
+  comment="$(printf "${template}" "${comment}")"
+
+  local number=$(jq -r '.pull_request.number' ${GITHUB_EVENT_PATH})
+  local owner=${GITHUB_REPOSITORY%/*}
+  local repo=${GITHUB_REPOSITORY#*/}
+
+  github-comment "${owner}" "${repo}" "${number}" "${comment}"
+}
+
+set -o pipefail
+
+main "$@" | notify
 exit $?

@@ -15,6 +15,13 @@ RUN mkdir -p /tmp/opa \
     && chmod +x /usr/local/bin/opa \
     && rm -rf /tmp/opa
 
+## Install github-comment
+RUN wget -O /tmp/github-comment.tar.gz https://github.com/b4b4r07/misc-1/releases/download/v0.1.3/github-comment-0.1.2-linux-amd64.tar.gz \
+    && cd /tmp \
+    && tar -zxvf /tmp/github-comment.tar.gz \
+    && mv github-comment-linux-amd64/github-comment /usr/local/bin/github-comment \
+    && rm /tmp/github-comment.tar.gz
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
