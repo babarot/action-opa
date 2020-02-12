@@ -14,18 +14,14 @@ You can use the fixed version from: [Releases](https://github.com/b4b4r07/action
 A whole example is here:
 
 ```yaml
-name: Run opa test
+name: opa
 
-on:
-  push:
-    branches:
-      - '*'
-      - '!master'
+on: [pull_request]
 
 jobs:
-  test:
+  opa:
+    name: opa test
     runs-on: ubuntu-latest
-    name: Run opa test
     steps:
     - name: Checkout
       uses: actions/checkout@v1
@@ -36,16 +32,32 @@ jobs:
         deleted: 'false'
         modified: 'true'
       id: objects
-    - name: Run opa test
+    - name: Run opa test against changed files
       uses: b4b4r07/action-opa@master
       if: steps.objects.outputs.changed
       with:
-        path: .
         coverage: 90%
         files: ${{ steps.objects.outputs.changed }}
+      id: opa
+    - name: Post opa command result to GitHub comment
+      uses: b4b4r07/action-github-comment@master
+      if: steps.opa.outputs.result
+      with:
+        body: |
+          ## opa test result
+          ```
+          ${{ steps.opa.outputs.result }}
+          ```
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        LOG: trace
 ```
 
 If you want to test [opa](https://github.com/open-policy-agent/opa)/[conftest](https://github.com/instrumenta/conftest) policies against only changed files, you need to use [b4b4r07/action-changed-objects](https://github.com/b4b4r07/action-changed-objects) to get the changed files in Git commit. It defaults to compare with checkout-ed branch and origin/master branch.
+
+Besides, if you want to post the `opa test` command result on your pull requests, you need to set the step `Post opa command result to GitHub comment`. The contents of `body` is the message itself. You can configure it as Markdown. For more details, please see also [b4b4r07/action-github-comment](https://github.com/b4b4r07/action-github-comment).
+
+<img src="https://user-images.githubusercontent.com/4442708/74351783-eeb19680-4dfa-11ea-8c99-23ece1c8cc37.png" width="600">
 
 BTW, you want the example rego files:
 
@@ -115,7 +127,7 @@ The following are optional as `step.with` keys
 | ---------- | ------ | ----------------------------------------------------------------- | ------- |
 | `path`     | String | Path to directory where rego files are located                    | `.`     |
 | `coverage` | String | Percentage of test coverage to require                            | `80%`   |
-| `files`    | String | Files subject to OPA testing. List should be separated by a space | (n/a)   |
+| `files`    | String | Files subject to OPA testing. List should be separated by a space |         |
 
 When providing a `path` and `files` at the same time, `files` will be attempted first, then falling back on `path` if the files can not be got from.
 
@@ -123,9 +135,9 @@ When providing a `path` and `files` at the same time, `files` will be attempted 
 
 The following outputs can be accessed via `${{ steps.<step-id>.outputs }}` from this action
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| n/a  | n/a  | n/a         |
+| Name     | Type   | Description              |
+| -------- | ------ | ------------------------ |
+| `result` | String | Outputs of `opa` command |
 
 ### environment variables
 
