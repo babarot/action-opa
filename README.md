@@ -3,7 +3,7 @@ action-opa
 
 [![](https://github.com/b4b4r07/action-opa/workflows/release/badge.svg)](https://github.com/b4b4r07/action-opa/releases)
 
-![](demo.png)
+![](docs/demo.png)
 
 Run [opa test](https://www.openpolicyagent.org/docs/latest/policy-testing/) command with GitHub Actions
 
@@ -57,7 +57,7 @@ If you want to test [opa](https://github.com/open-policy-agent/opa)/[conftest](h
 
 Besides, if you want to post the `opa test` command result on your pull requests, you need to set the step `Post opa command result to GitHub comment`. The contents of `body` is the message itself. You can configure it as Markdown. For more details, please see also [b4b4r07/action-github-comment](https://github.com/b4b4r07/action-github-comment).
 
-<img src="https://user-images.githubusercontent.com/4442708/74351783-eeb19680-4dfa-11ea-8c99-23ece1c8cc37.png" width="600">
+<img src="docs/comment.png" width="600">
 
 BTW, you want the example rego files:
 
