@@ -16,7 +16,11 @@ A whole example is here:
 ```yaml
 name: opa
 
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/opa.yml' ## self-trigger
+      - '.policy/**'
 
 jobs:
   opa:
