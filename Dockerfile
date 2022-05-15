@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/golang
-FROM golang:1.18.2-stretch
+FROM golang:1.18.2-bullseye
 
 # https://github.com/open-policy-agent/opa/releases
 ENV OPA_VERSION=v0.40.0
