@@ -59,7 +59,7 @@ main() {
   run_opa "$@" 2>&1 | tee -a result
   result="$(cat result)"
   # https://github.community/t5/GitHub-Actions/set-output-Truncates-Multiline-Strings/td-p/37870
-  echo "::set-output name=result::${result//$'\n'/'%0A'}"
+  echo "result=${result//$'\n'/'%0A'}" >> $GITHUB_OUTPUT
 }
 
 set -o pipefail
